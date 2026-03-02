@@ -1,9 +1,10 @@
 .page {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - var(--header-h) - var(--footer-h));
-    max-width: 860px;
+    flex: 1;
+    min-height: 0;
     width: 100%;
+    max-width: 860px;
     margin: 0 auto;
     padding: 0 16px;
     gap: 0;
