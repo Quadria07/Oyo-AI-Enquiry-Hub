@@ -7,20 +7,21 @@
 
 .pageHead {
     background: var(--white);
-    padding: 10px 24px 12px;
+    padding: 8px 20px 10px;
     border-bottom: 2px solid var(--maroon);
     flex-shrink: 0;
 }
 
+/* Back button row */
 .headTop {
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 }
 
 .backBtn {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 0.76rem;
+    font-size: 0.74rem;
     font-weight: 600;
     color: var(--maroon);
     border: 1px solid var(--maroon);
@@ -29,22 +30,68 @@
     text-decoration: none;
     transition: background var(--transition), color var(--transition);
     letter-spacing: 0.02em;
+    /* Always visible */
+    visibility: visible;
+    opacity: 1;
 }
 
-.backBtn:hover {
+.backBtn:hover,
+.backBtn:active {
     background: var(--maroon);
     color: var(--white);
 }
 
 .pageTitle {
     font-family: var(--font-heading);
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--maroon);
+    line-height: 1.2;
 }
 
 .pageDesc {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     color: var(--gray-400);
     margin-top: 2px;
+}
+
+/* ── Tablet ── */
+@media (max-width: 768px) {
+    .pageHead {
+        padding: 7px 14px 9px;
+    }
+
+    .pageTitle {
+        font-size: 1.05rem;
+    }
+
+    .pageDesc {
+        font-size: 0.72rem;
+    }
+
+    .backBtn {
+        font-size: 0.72rem;
+        padding: 3px 9px;
+    }
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+    .pageHead {
+        padding: 6px 10px 8px;
+    }
+
+    .pageTitle {
+        font-size: 0.95rem;
+    }
+
+    .pageDesc {
+        display: none;
+    }
+
+    .backBtn {
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        gap: 4px;
+    }
 }

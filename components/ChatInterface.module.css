@@ -14,7 +14,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 0 8px;
+    padding: 8px 0 6px;
     flex-shrink: 0;
 }
 
@@ -43,6 +43,9 @@
     font-size: 0.78rem;
     color: var(--gray-600);
     letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .modeText strong {
@@ -72,6 +75,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Empty State */
@@ -83,14 +87,9 @@
     justify-content: center;
     gap: 12px;
     color: var(--gray-400);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     text-align: center;
-    padding: 40px;
-}
-
-.emptyIcon {
-    font-size: 2.5rem;
-    opacity: 0.5;
+    padding: 32px 20px;
 }
 
 /* Bubbles */
@@ -114,15 +113,15 @@
 .userText {
     background: var(--maroon);
     color: var(--white);
-    padding: 12px 16px;
+    padding: 11px 15px;
     border-radius: 18px 18px 4px 18px;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     line-height: 1.55;
     word-break: break-word;
 }
 
 .timestamp {
-    font-size: 0.67rem;
+    font-size: 0.65rem;
     color: var(--gold-muted);
     margin-top: 4px;
     font-weight: 500;
@@ -134,7 +133,7 @@
     background: var(--gray-50);
     border: 1px solid var(--gray-200);
     border-radius: 4px 18px 18px 18px;
-    padding: 16px 18px;
+    padding: 14px 16px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -148,12 +147,12 @@
 }
 
 .aiAvatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
     background: var(--maroon);
     color: var(--gold);
-    font-size: 0.62rem;
+    font-size: 0.58rem;
     font-weight: 800;
     display: flex;
     align-items: center;
@@ -169,13 +168,13 @@
 }
 
 .aiName {
-    font-size: 0.75rem;
+    font-size: 0.73rem;
     font-weight: 600;
     color: var(--maroon);
 }
 
 .answerText {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     color: var(--gray-800);
     line-height: 1.7;
 }
@@ -185,7 +184,7 @@
 }
 
 .systemMsg {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     color: var(--gray-600);
     font-style: italic;
     line-height: 1.6;
@@ -200,12 +199,12 @@
 .metaRow {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
 .lastUpdated {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     color: var(--gray-400);
 }
 
@@ -234,7 +233,7 @@
 }
 
 .thinkingLabel {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     color: var(--gray-400);
     font-style: italic;
     margin-left: 4px;
@@ -248,7 +247,7 @@
 /* Input Area */
 .inputArea {
     flex-shrink: 0;
-    padding: 12px 20px 14px;
+    padding: 10px 16px 12px;
     background: var(--white);
     border-top: 1px solid var(--gray-200);
 }
@@ -256,20 +255,21 @@
 .inputWrap {
     position: relative;
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 
 .input {
     flex: 1;
     border: 1.5px solid var(--gray-200);
     border-radius: 10px;
-    padding: 12px 16px;
+    padding: 11px 14px;
     font-size: 0.9rem;
     font-family: var(--font-body);
     color: var(--gray-800);
     background: var(--white);
     outline: none;
     transition: border-color var(--transition), box-shadow var(--transition);
+    min-width: 0;
 }
 
 .input:focus {
@@ -291,8 +291,8 @@
     color: var(--gold);
     border: none;
     border-radius: 10px;
-    width: 46px;
-    font-size: 1rem;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -315,7 +315,7 @@
     position: absolute;
     bottom: calc(100% + 6px);
     left: 0;
-    right: 56px;
+    right: 52px;
     background: var(--white);
     border: 1.5px solid var(--maroon);
     border-radius: 10px;
@@ -323,45 +323,49 @@
     overflow: hidden;
     z-index: 50;
     animation: fadeInUp 0.2s ease both;
-    max-height: 280px;
+    max-height: 240px;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .suggestion {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: flex-start;
+    gap: 8px;
     width: 100%;
     text-align: left;
     background: none;
     border: none;
-    padding: 11px 14px;
-    font-size: 0.84rem;
+    padding: 10px 12px;
+    font-size: 0.82rem;
     color: var(--gray-800);
     border-bottom: 1px solid var(--gray-100);
     transition: background var(--transition);
     font-family: var(--font-body);
     line-height: 1.4;
+    cursor: pointer;
 }
 
 .suggestion:last-child {
     border-bottom: none;
 }
 
-.suggestion:hover {
+.suggestion:hover,
+.suggestion:active {
     background: var(--gray-50);
     color: var(--maroon);
 }
 
 .suggIcon {
-    font-size: 0.8rem;
     flex-shrink: 0;
-    opacity: 0.6;
+    margin-top: 1px;
+    opacity: 0.7;
 }
 
-@media (max-width: 640px) {
+/* ── Responsive ── */
+@media (max-width: 768px) {
     .page {
-        padding: 0 8px;
+        padding: 0 10px;
     }
 
     .chatList {
@@ -369,10 +373,70 @@
     }
 
     .inputArea {
-        padding: 10px 12px 12px;
+        padding: 8px 10px 10px;
     }
 
     .bubble {
-        max-width: 92%;
+        max-width: 90%;
+    }
+
+    .suggestions {
+        max-height: 200px;
+        right: 52px;
+    }
+
+    .aiCard {
+        padding: 12px 13px;
+    }
+
+    .modeBar {
+        padding: 6px 0 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .page {
+        padding: 0 6px;
+    }
+
+    .chatList {
+        padding: 12px 8px 6px;
+        gap: 12px;
+    }
+
+    .inputArea {
+        padding: 7px 8px 8px;
+    }
+
+    .bubble {
+        max-width: 95%;
+    }
+
+    .input {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    .suggestions {
+        max-height: 180px;
+        left: 0;
+        right: 50px;
+    }
+
+    .userText {
+        padding: 10px 13px;
+        font-size: 0.85rem;
+    }
+
+    .answerText {
+        font-size: 0.84rem;
+    }
+
+    .modeText {
+        font-size: 0.72rem;
+    }
+
+    .thinkingLabel {
+        display: none;
     }
 }

@@ -62,17 +62,39 @@
     flex-shrink: 0;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+    .inner {
+        padding: 0 18px;
+    }
+
     .brandMark {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
 
     .brandName {
-        font-size: 0.9rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        height: 58px;
+    }
+
+    .inner {
+        padding: 0 14px;
+    }
+
+    .brandMark {
+        font-size: 1.1rem;
+    }
+
+    .brandName {
+        font-size: 0.82rem;
     }
 
     .demoBadge {
-        font-size: 0.6rem;
-        padding: 3px 8px;
+        font-size: 0.58rem;
+        padding: 2px 7px;
     }
 }
