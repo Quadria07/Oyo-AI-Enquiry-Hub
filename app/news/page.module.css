@@ -5,16 +5,64 @@
     overflow: hidden;
 }
 
+/* ── Oyo cultural page header ──────────────────────────────────────────── */
 .pageHead {
     background: var(--white);
-    padding: 8px 20px 10px;
+    padding: 0;
     border-bottom: 2px solid var(--maroon);
     flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Adire mini pattern on left edge */
+.pageHead::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: repeating-linear-gradient(180deg,
+            var(--maroon) 0px,
+            var(--maroon) 8px,
+            var(--gold) 8px,
+            var(--gold) 12px,
+            var(--green) 12px,
+            var(--green) 16px,
+            var(--gold) 16px,
+            var(--gold) 20px);
+    border-radius: 0;
+}
+
+/* 5-stripe micro-banner at very top */
+.pageHead::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+            var(--maroon-dark) 0%,
+            var(--maroon-dark) 20%,
+            var(--gold) 20%,
+            var(--gold) 40%,
+            var(--green) 40%,
+            var(--green) 60%,
+            var(--gold) 60%,
+            var(--gold) 80%,
+            var(--maroon-dark) 80%,
+            var(--maroon-dark) 100%);
+}
+
+.pageHeadContent {
+    padding: 10px 20px 11px 28px;
 }
 
 /* Back button row */
 .headTop {
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .backBtn {
@@ -30,9 +78,6 @@
     text-decoration: none;
     transition: background var(--transition), color var(--transition);
     letter-spacing: 0.02em;
-    /* Always visible */
-    visibility: visible;
-    opacity: 1;
 }
 
 .backBtn:hover,
@@ -43,22 +88,22 @@
 
 .pageTitle {
     font-family: var(--font-heading);
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--maroon);
     line-height: 1.2;
 }
 
 .pageDesc {
-    font-size: 0.75rem;
+    font-size: 0.74rem;
     color: var(--gray-400);
-    margin-top: 2px;
+    margin-top: 1px;
 }
 
-/* ── Tablet ── */
+/* ── Responsive ───────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-    .pageHead {
-        padding: 7px 14px 9px;
+    .pageHeadContent {
+        padding: 8px 16px 9px 22px;
     }
 
     .pageTitle {
@@ -66,19 +111,13 @@
     }
 
     .pageDesc {
-        font-size: 0.72rem;
-    }
-
-    .backBtn {
-        font-size: 0.72rem;
-        padding: 3px 9px;
+        font-size: 0.71rem;
     }
 }
 
-/* ── Mobile ── */
 @media (max-width: 480px) {
-    .pageHead {
-        padding: 6px 10px 8px;
+    .pageHeadContent {
+        padding: 6px 10px 8px 18px;
     }
 
     .pageTitle {
@@ -92,6 +131,5 @@
     .backBtn {
         font-size: 0.7rem;
         padding: 2px 8px;
-        gap: 4px;
     }
 }

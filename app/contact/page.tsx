@@ -7,20 +7,18 @@ export default function ContactPage() {
     return (
         <div className={styles.pageShell}>
             <div className={styles.pageHead}>
-                <div className={styles.headTop}>
-                    <Link href="/" className={styles.backBtn}>
-                        <ArrowLeftIcon size={15} strokeWidth={2.2} />
-                        Back
-                    </Link>
+                <div className={styles.pageHeadContent}>
+                    <div className={styles.headTop}>
+                        <Link href="/" className={styles.backBtn}>
+                            <ArrowLeftIcon size={15} strokeWidth={2.2} />
+                            Back
+                        </Link>
+                    </div>
+                    <h2 className={styles.pageTitle}>Contact Enquiry</h2>
+                    <p className={styles.pageDesc}>Locate trusted contacts and key institutions across Oyo State.</p>
                 </div>
-                <h2 className={styles.pageTitle}>Contact Enquiry</h2>
-                <p className={styles.pageDesc}>Locate trusted contacts and key institutions across Oyo State.</p>
             </div>
-            <ChatInterface
-                category="contact"
-                pageTitle="Contact Enquiry"
-                modeLabel="Contact Enquiry"
-            />
+            <ChatInterface category="contact" pageTitle="Contact Enquiry" modeLabel="Contact Enquiry" />
         </div>
     );
 }
