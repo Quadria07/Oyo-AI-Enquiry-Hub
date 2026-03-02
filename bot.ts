@@ -1,6 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api';
 import * as dotenv from 'dotenv';
-import { findAnswer } from './data/qa';
+import { findAnswer, qaData } from './data/qa';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -9,7 +9,7 @@ dotenv.config();
 const token = process.env.TELEGRAM_BOT_TOKEN;
 
 if (!token) {
-    console.error('❌ ERROR: TELEGRAM_BOT_TOKEN is missing in the .env file.');
+    console.error('ERROR: TELEGRAM_BOT_TOKEN is missing in the .env file.');
     console.error('Please create a bot via @BotFather on Telegram, get your token, and add it to .env');
     process.exit(1);
 }
@@ -17,7 +17,7 @@ if (!token) {
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, { polling: true });
 
-console.log('✅ Oyo AI Enquiry Hub (Telegram Bot) is now running!');
+console.log('Oyo AI Enquiry Hub (Telegram Bot) is now running!');
 console.log('Waiting for messages...');
 
 // Listen for any kind of message
@@ -27,20 +27,52 @@ bot.on('message', (msg) => {
 
     if (!text) return;
 
-    // Handle /start command
+    // 1. Handle /start command — List all available categories and questions
     if (text === '/start') {
-        const welcomeMessage = `Ẹ káàbọ̀! Welcome to the *Oyo AI Enquiry Hub*. 🏛️\n\nI can assist you with:\n📰 *News* Updates\n✅ *Verification* of public claims\n📍 *Contact* & Places\n\nWhat would you like to know about Oyo State today?`;
+        const buildSection = (title: string, category: 'news' | 'verification' | 'contact') => {
+            const questions = qaData
+                .filter(q => q.category === category && !q.outOfScope)
+                .map(q => `/${category}_${q.id} - ${q.question}`)
+                .join('\n');
+            return `*${title}*\n${questions}`;
+        };
+
+        const welcomeMessage =
+            `Ẹ káàbọ̀! Welcome to the *Oyo AI Enquiry Hub*.
+
+Please tap on any of the commands below to instantly get a verified response:
+
+${buildSection('News Enquiries', 'news')}
+
+${buildSection('Verification Enquiries', 'verification')}
+
+${buildSection('Contact & Places Enquiries', 'contact')}`;
 
         bot.sendMessage(chatId, welcomeMessage, { parse_mode: 'Markdown' });
         return;
     }
 
-    console.log(`Received question: "${text}"`);
+    // 2. Handle direct command clicks (e.g., /news_1, /contact_9)
+    const cmdMatch = text.match(/^\/(news|verification|contact)_(\w+)/);
+    if (cmdMatch) {
+        const category = cmdMatch[1];
+        const id = cmdMatch[2];
 
-    // We don't know the exact category they want from a raw Telegram text, 
-    // so we search across all categories by trying them, or we can just search 'news' as default for the prototype.
-    // For a better prototype, we'll try categorizing loosely based on keywords.
+        const entry = qaData.find(q => q.category === category && q.id === id);
 
+        if (entry) {
+            let response = `${entry.answer}\n\n`;
+            response += `_Confidence Level: ${entry.confidence}_`;
+            bot.sendMessage(chatId, response, { parse_mode: 'Markdown' });
+        } else {
+            bot.sendMessage(chatId, 'This query is outside the current demonstration dataset. Please try a different question.');
+        }
+        return;
+    }
+
+    console.log(`Received text: "${text}"`);
+
+    // 3. Fallback: Try to handle free-text questions just like the web app
     let category: 'news' | 'verification' | 'contact' = 'news';
     const lowerText = text.toLowerCase();
 
@@ -50,18 +82,14 @@ bot.on('message', (msg) => {
         category = 'contact';
     }
 
-    // Find the answer using our existing web app logic
     const entry = findAnswer(category, text);
 
     if (entry?.outOfScope) {
-        bot.sendMessage(chatId, '⚠️ This question is not available within the current knowledge scope for Oyo State.');
+        bot.sendMessage(chatId, 'This question is not available within the current knowledge scope for Oyo State.');
     } else if (entry) {
-        // Format the answer
-        let response = `${entry.answer}\n\n`;
-        response += `_Confidence Level: ${entry.confidence}_`;
-
+        let response = `${entry.answer}\n\n_Confidence Level: ${entry.confidence}_`;
         bot.sendMessage(chatId, response, { parse_mode: 'Markdown' });
     } else {
-        bot.sendMessage(chatId, 'This query is outside the current demonstration dataset. Please try a different question about Oyo State.');
+        bot.sendMessage(chatId, 'This query is outside the current demonstration dataset. Please try a different question about Oyo State, or type /start to see the menu.');
     }
 });
