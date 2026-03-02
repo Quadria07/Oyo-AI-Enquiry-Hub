@@ -10,6 +10,31 @@
     gap: 0;
 }
 
+/* Typewriter blinking cursor */
+.cursor {
+    display: inline-block;
+    width: 2px;
+    color: transparent;
+    background: var(--maroon);
+    margin-left: 1px;
+    border-radius: 1px;
+    animation: blink 0.7s step-end infinite;
+    vertical-align: text-bottom;
+    height: 1em;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
 /* Mode Bar */
 .modeBar {
     display: flex;

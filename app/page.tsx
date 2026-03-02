@@ -138,6 +138,35 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── How It Works ── */}
+      <section className={styles.howSection}>
+        <div className={styles.howInner}>
+          <div className={styles.howLabel}>How It Works</div>
+          <div className={styles.howSteps}>
+            {/* Step 1 */}
+            <div className={styles.step}>
+              <div className={styles.stepNum}>01</div>
+              <div className={styles.stepLine} aria-hidden="true" />
+              <h3 className={styles.stepTitle}>Choose a Category</h3>
+              <p className={styles.stepDesc}>Select News, Verification, or Contact enquiry from the homepage to open the AI chat interface.</p>
+            </div>
+            {/* Step 2 */}
+            <div className={styles.step}>
+              <div className={styles.stepNum}>02</div>
+              <div className={styles.stepLine} aria-hidden="true" />
+              <h3 className={styles.stepTitle}>Ask Your Question</h3>
+              <p className={styles.stepDesc}>Type freely or select from suggested questions. The system understands natural language within the Oyo State knowledge scope.</p>
+            </div>
+            {/* Step 3 */}
+            <div className={styles.step}>
+              <div className={`${styles.stepNum} ${styles.stepNumLast}`}>03</div>
+              <h3 className={styles.stepTitle}>Get a Structured Response</h3>
+              <p className={styles.stepDesc}>Receive a verified, sourced answer with a confidence rating — displayed clearly with last-updated information.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── Feature Cards ── */}
       <section className={styles.cards}>
         <div className={styles.cardsInner}>

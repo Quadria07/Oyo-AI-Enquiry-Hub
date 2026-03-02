@@ -1,8 +1,6 @@
 'use client';
 
-import React from 'react';
-
-import { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { qaData, findAnswer, QAEntry } from '@/data/qa';
 import ConfidenceBadge from './ConfidenceBadge';
 import SourcesToggle from './SourcesToggle';
@@ -19,6 +17,7 @@ interface Message {
     timestamp: string;
     isOutOfScope?: boolean;
     isFallback?: boolean;
+    useTypewriter?: boolean;
 }
 
 interface Props {
@@ -31,15 +30,59 @@ function getTimestamp() {
     return new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 }
 
-function formatAnswer(text: string): React.ReactElement {
-    const parts = text.split(/(\*\*[^*]+\*\*)/).map((part, i) => {
+// ── Typewriter component ─────────────────────────────────────────────────────
+function TypewriterText({ text, speed = 18 }: { text: string; speed?: number }) {
+    const [displayed, setDisplayed] = useState('');
+    const [done, setDone] = useState(false);
+
+    useEffect(() => {
+        setDisplayed('');
+        setDone(false);
+        let i = 0;
+        const id = setInterval(() => {
+            i++;
+            setDisplayed(text.slice(0, i));
+            if (i >= text.length) {
+                clearInterval(id);
+                setDone(true);
+            }
+        }, speed);
+        return () => clearInterval(id);
+    }, [text, speed]);
+
+    // Apply bold markdown to the displayed portion
+    const parts = displayed.split(/(\*\*[^*]+\*\*)/).map((part, idx) => {
         if (part.startsWith('**') && part.endsWith('**')) {
-            return <strong key={i}>{part.slice(2, -2)}</strong>;
+            return <strong key={idx}>{part.slice(2, -2)}</strong>;
         }
-        return <span key={i}>{part}</span>;
+        return <span key={idx}>{part}</span>;
+    });
+
+    return (
+        <p>
+            {parts}
+            {!done && <span className={styles.cursor}>|</span>}
+        </p>
+    );
+}
+
+// ── Static formatted text (for non-typewriter messages) ──────────────────────
+function FormatText({ text }: { text: string }) {
+    const parts = text.split(/(\*\*[^*]+\*\*)/).map((part, idx) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+            return <strong key={idx}>{part.slice(2, -2)}</strong>;
+        }
+        return <span key={idx}>{part}</span>;
     });
     return <p>{parts}</p>;
 }
+
+// ── Welcome messages per category ───────────────────────────────────────────
+const WELCOME: Record<ChatCategory, string> = {
+    news: `Ẹ káàbọ̀! Welcome to the Oyo AI News Enquiry. I can provide structured updates on politics, government programmes, culture, and sports across Oyo State. How may I assist you today?`,
+    verification: `Ẹ káàbọ̀! Welcome to the Oyo AI Verification Enquiry. I can help verify public claims and statements relating to Oyo State using evidence-based structured responses. What would you like to verify?`,
+    contact: `Ẹ káàbọ̀! Welcome to the Oyo AI Contact Enquiry. I can help you locate trusted contacts, institutions, and key places across Oyo State. How can I assist you?`,
+};
 
 const OUT_OF_SCOPE_MSG = 'This question is not available within the current knowledge scope.';
 const FALLBACK_MSG = 'This query is outside the current demonstration dataset.';
@@ -55,20 +98,34 @@ export default function ChatInterface({ category, pageTitle, modeLabel }: Props)
 
     const categoryQuestions = qaData.filter((e) => e.category === category);
 
+    // ── Auto welcome message on mount ──────────────────────────────────────────
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setMessages([{
+                id: 'welcome',
+                role: 'ai',
+                text: WELCOME[category],
+                timestamp: getTimestamp(),
+                useTypewriter: true,
+            }]);
+        }, 600);
+        return () => clearTimeout(timer);
+    }, [category]);
+
+    // ── Scroll to bottom on new messages ───────────────────────────────────────
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages, thinking]);
 
+    // ── Suggestion filtering ────────────────────────────────────────────────────
     const updateSuggestions = useCallback((val: string) => {
         const norm = val.toLowerCase().trim();
-        if (norm.length === 0) {
-            setFilteredSuggestions(categoryQuestions);
-        } else {
-            setFilteredSuggestions(
-                categoryQuestions.filter((e) => e.question.toLowerCase().includes(norm))
-            );
-        }
-    }, [category, categoryQuestions]);
+        setFilteredSuggestions(
+            norm.length === 0
+                ? categoryQuestions
+                : categoryQuestions.filter((e) => e.question.toLowerCase().includes(norm))
+        );
+    }, [categoryQuestions]);
 
     const handleFocus = () => {
         updateSuggestions(input);
@@ -81,6 +138,7 @@ export default function ChatInterface({ category, pageTitle, modeLabel }: Props)
         setShowSuggestions(true);
     };
 
+    // ── Submit query ────────────────────────────────────────────────────────────
     const submitQuery = async (query: string) => {
         if (!query.trim() || thinking) return;
         setShowSuggestions(false);
@@ -95,7 +153,7 @@ export default function ChatInterface({ category, pageTitle, modeLabel }: Props)
         setMessages((prev) => [...prev, userMsg]);
         setThinking(true);
 
-        const delay = 500 + Math.random() * 300;
+        const delay = 600 + Math.random() * 400;
         await new Promise((r) => setTimeout(r, delay));
 
         const entry = findAnswer(category, query.trim());
@@ -108,6 +166,7 @@ export default function ChatInterface({ category, pageTitle, modeLabel }: Props)
                 text: OUT_OF_SCOPE_MSG,
                 timestamp: getTimestamp(),
                 isOutOfScope: true,
+                useTypewriter: true,
             };
         } else if (entry) {
             aiMsg = {
@@ -116,6 +175,7 @@ export default function ChatInterface({ category, pageTitle, modeLabel }: Props)
                 text: entry.answer,
                 entry,
                 timestamp: getTimestamp(),
+                useTypewriter: true,
             };
         } else {
             aiMsg = {
@@ -124,6 +184,7 @@ export default function ChatInterface({ category, pageTitle, modeLabel }: Props)
                 text: FALLBACK_MSG,
                 timestamp: getTimestamp(),
                 isFallback: true,
+                useTypewriter: true,
             };
         }
 
@@ -132,7 +193,7 @@ export default function ChatInterface({ category, pageTitle, modeLabel }: Props)
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') { submitQuery(input); }
+        if (e.key === 'Enter') submitQuery(input);
         if (e.key === 'Escape') setShowSuggestions(false);
     };
 
@@ -175,17 +236,23 @@ export default function ChatInterface({ category, pageTitle, modeLabel }: Props)
                                     </div>
 
                                     {msg.isOutOfScope || msg.isFallback ? (
-                                        <p className={styles.systemMsg}>{msg.text}</p>
+                                        <p className={styles.systemMsg}>
+                                            {msg.useTypewriter
+                                                ? <TypewriterText text={msg.text} speed={22} />
+                                                : msg.text}
+                                        </p>
                                     ) : (
                                         <>
-                                            <div className={styles.answerText}>{formatAnswer(msg.text)}</div>
+                                            <div className={styles.answerText}>
+                                                {msg.useTypewriter
+                                                    ? <TypewriterText text={msg.text} speed={16} />
+                                                    : <FormatText text={msg.text} />}
+                                            </div>
                                             {msg.entry && (
                                                 <div className={styles.metadata}>
                                                     <div className={styles.metaRow}>
                                                         <ConfidenceBadge level={msg.entry.confidence} />
-                                                        <span className={styles.lastUpdated}>
-                                                            Last Updated: {msg.entry.lastUpdated}
-                                                        </span>
+                                                        <span className={styles.lastUpdated}>Last Updated: {msg.entry.lastUpdated}</span>
                                                     </div>
                                                     {msg.entry.sources && msg.entry.sources.length > 0 && (
                                                         <SourcesToggle sources={msg.entry.sources} />
@@ -207,9 +274,7 @@ export default function ChatInterface({ category, pageTitle, modeLabel }: Props)
                                     <span className={styles.aiName}>Oyo AI Enquiry Hub</span>
                                 </div>
                                 <div className={styles.thinkingDots}>
-                                    <span />
-                                    <span />
-                                    <span />
+                                    <span /><span /><span />
                                     <span className={styles.thinkingLabel}>AI is analyzing…</span>
                                 </div>
                             </div>
@@ -218,7 +283,7 @@ export default function ChatInterface({ category, pageTitle, modeLabel }: Props)
                     <div ref={bottomRef} />
                 </div>
 
-                {/* Input area */}
+                {/* Input */}
                 <div className={styles.inputArea}>
                     <div className={styles.inputWrap}>
                         <input

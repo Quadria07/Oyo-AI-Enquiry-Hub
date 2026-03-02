@@ -214,6 +214,113 @@
   display: block;
 }
 
+/* ─── How It Works ──────────────────────────────────────────────────────── */
+.howSection {
+  background: #2a0000;
+  padding: 52px 24px 56px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle Adire dot grid overlay */
+.howSection::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255, 195, 0, 0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+.howInner {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.howLabel {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 40px;
+  opacity: 0.75;
+}
+
+.howSteps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  position: relative;
+}
+
+/* Horizontal connector line */
+.howSteps::before {
+  content: '';
+  position: absolute;
+  top: 22px;
+  left: calc(100% / 6);
+  right: calc(100% / 6);
+  height: 1px;
+  border-top: 1.5px dashed rgba(255, 195, 0, 0.25);
+  z-index: 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.stepNum {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--maroon);
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 6px rgba(139, 0, 0, 0.35);
+}
+
+.stepNumLast {
+  box-shadow: 0 0 0 6px rgba(139, 0, 0, 0.35);
+}
+
+.stepLine {
+  display: none;
+}
+
+.stepTitle {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.25;
+}
+
+.stepDesc {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.7;
+}
+
 /* ─── Cards Section ─────────────────────────────────────────────────────── */
 .cards {
   flex: 1;
