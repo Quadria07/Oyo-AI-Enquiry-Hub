@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { qaData, findAnswer, QAEntry } from '@/data/qa';
 import ConfidenceBadge from './ConfidenceBadge';
@@ -29,7 +31,7 @@ function getTimestamp() {
     return new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 }
 
-function formatAnswer(text: string): JSX.Element {
+function formatAnswer(text: string): React.ReactElement {
     const parts = text.split(/(\*\*[^*]+\*\*)/).map((part, i) => {
         if (part.startsWith('**') && part.endsWith('**')) {
             return <strong key={i}>{part.slice(2, -2)}</strong>;
