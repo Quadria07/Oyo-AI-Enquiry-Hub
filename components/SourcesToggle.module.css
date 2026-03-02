@@ -1,0 +1,52 @@
+.wrap {
+    margin-top: 10px;
+}
+
+.toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--maroon);
+    background: none;
+    border: 1px solid var(--maroon);
+    border-radius: 6px;
+    padding: 4px 10px;
+    transition: background var(--transition), color var(--transition);
+}
+
+.toggle:hover {
+    background: var(--maroon);
+    color: var(--white);
+}
+
+.icon {
+    font-size: 0.65rem;
+}
+
+.list {
+    margin-top: 8px;
+    border-left: 3px solid var(--gold);
+    padding-left: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.source {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sourceName {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+.sourceMeta {
+    font-size: 0.7rem;
+    color: var(--gray-400);
+}

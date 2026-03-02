@@ -1,0 +1,36 @@
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 99px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.badge::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+}
+
+.high {
+    background: #d4edda;
+    color: #1a6b33;
+}
+
+.moderate {
+    background: #fff3cd;
+    color: #8a6100;
+}
+
+.limited {
+    background: #f8d7da;
+    color: #842029;
+}

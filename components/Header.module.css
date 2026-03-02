@@ -1,0 +1,78 @@
+.header {
+    background: var(--maroon);
+    height: var(--header-h);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(139, 0, 0, 0.35);
+}
+
+.inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Left: Brand */
+.brand {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    text-decoration: none;
+    transition: opacity var(--transition);
+}
+
+.brand:hover {
+    opacity: 0.85;
+}
+
+.brandMark {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    line-height: 1;
+}
+
+.brandName {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.01em;
+    line-height: 1;
+}
+
+/* Right: Demo Badge */
+.demoBadge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--maroon-dark);
+    background: var(--gold);
+    padding: 4px 12px;
+    border-radius: 99px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+    .brandMark {
+        font-size: 1.2rem;
+    }
+
+    .brandName {
+        font-size: 0.9rem;
+    }
+
+    .demoBadge {
+        font-size: 0.6rem;
+        padding: 3px 8px;
+    }
+}

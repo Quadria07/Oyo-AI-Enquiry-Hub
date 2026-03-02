@@ -1,0 +1,50 @@
+.pageShell {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - var(--header-h) - var(--footer-h));
+    overflow: hidden;
+}
+
+.pageHead {
+    background: var(--white);
+    padding: 10px 24px 12px;
+    border-bottom: 2px solid var(--maroon);
+    flex-shrink: 0;
+}
+
+.headTop {
+    margin-bottom: 6px;
+}
+
+.backBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--maroon);
+    border: 1px solid var(--maroon);
+    border-radius: 6px;
+    padding: 3px 10px;
+    text-decoration: none;
+    transition: background var(--transition), color var(--transition);
+    letter-spacing: 0.02em;
+}
+
+.backBtn:hover {
+    background: var(--maroon);
+    color: var(--white);
+}
+
+.pageTitle {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--maroon);
+}
+
+.pageDesc {
+    font-size: 0.78rem;
+    color: var(--gray-400);
+    margin-top: 2px;
+}
