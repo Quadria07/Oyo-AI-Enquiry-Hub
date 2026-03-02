@@ -27,6 +27,9 @@ bot.on('message', (msg) => {
 
     if (!text) return;
 
+    // Helper: Safely convert our local **markdown bold** to Telegram HTML <b>bold</b>
+    const formatHTML = (text: string) => text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+
     // 1. Handle /start command — List all available categories and questions
     if (text === '/start') {
         const buildSection = (title: string, category: 'news' | 'verification' | 'contact') => {
@@ -34,11 +37,11 @@ bot.on('message', (msg) => {
                 .filter(q => q.category === category && !q.outOfScope)
                 .map(q => `/${category}_${q.id} - ${q.question}`)
                 .join('\n');
-            return `*${title}*\n${questions}`;
+            return `<b>${title}</b>\n${questions}`;
         };
 
         const welcomeMessage =
-            `Ẹ káàbọ̀! Welcome to the *Oyo AI Enquiry Hub*.
+            `Ẹ káàbọ̀! Welcome to the <b>Oyo AI Enquiry Hub</b>.
 
 Please tap on any of the commands below to instantly get a verified response:
 
@@ -48,7 +51,7 @@ ${buildSection('Verification Enquiries', 'verification')}
 
 ${buildSection('Contact & Places Enquiries', 'contact')}`;
 
-        bot.sendMessage(chatId, welcomeMessage, { parse_mode: 'Markdown' });
+        bot.sendMessage(chatId, welcomeMessage, { parse_mode: 'HTML' });
         return;
     }
 
@@ -61,9 +64,9 @@ ${buildSection('Contact & Places Enquiries', 'contact')}`;
         const entry = qaData.find(q => q.category === category && q.id === id);
 
         if (entry) {
-            let response = `${entry.answer}\n\n`;
-            response += `_Confidence Level: ${entry.confidence}_`;
-            bot.sendMessage(chatId, response, { parse_mode: 'Markdown' });
+            let response = `${formatHTML(entry.answer)}\n\n`;
+            response += `<i>Confidence Level: ${entry.confidence}</i>`;
+            bot.sendMessage(chatId, response, { parse_mode: 'HTML' });
         } else {
             bot.sendMessage(chatId, 'This query is outside the current demonstration dataset. Please try a different question.');
         }
@@ -87,8 +90,8 @@ ${buildSection('Contact & Places Enquiries', 'contact')}`;
     if (entry?.outOfScope) {
         bot.sendMessage(chatId, 'This question is not available within the current knowledge scope for Oyo State.');
     } else if (entry) {
-        let response = `${entry.answer}\n\n_Confidence Level: ${entry.confidence}_`;
-        bot.sendMessage(chatId, response, { parse_mode: 'Markdown' });
+        let response = `${formatHTML(entry.answer)}\n\n<i>Confidence Level: ${entry.confidence}</i>`;
+        bot.sendMessage(chatId, response, { parse_mode: 'HTML' });
     } else {
         bot.sendMessage(chatId, 'This query is outside the current demonstration dataset. Please try a different question about Oyo State, or type /start to see the menu.');
     }
