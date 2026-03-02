@@ -5,7 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "bot": "tsx bot.ts",
+    "bot:start": "npx pm2 start bot.ts --interpreter tsx --name oyo-bot",
+    "bot:stop": "npx pm2 stop oyo-bot",
+    "bot:logs": "npx pm2 logs oyo-bot"
   },
   "dependencies": {
     "dotenv": "^17.3.1",
